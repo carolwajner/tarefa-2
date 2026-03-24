@@ -1,12 +1,57 @@
 from TracefileProcessor import TracefileProcessor
 
-tracefile_folder = 'Tracefiles'
-video_folder = 'videos'
+tracefile_folder = '/home/research-data/tracefiles-zipped'
+video_folder = '/home/research-data/video-sequences/'
 
 if __name__ == '__main__':
     VIDEOS = {
-        'BQSquare' : { 'res' : (416, 240) , 'bit_depth' : 8, 'yuv' : 'BQSquare_416x240_60.yuv' }
+        # --- CLASSE A1 (4K - High Dynamics / Natural Movement) ---
+        'Tango2': {'yuv': 'Tango2_3840x2160_60fps_10bit_420.yuv', 'res': (3840, 2160), 'bitdepth': 10},
+        'FoodMarket4': {'yuv': 'FoodMarket4_3840x2160_60fps_10bit_420.yuv', 'res': (3840, 2160), 'bitdepth': 10},
+        'Campfire': {'yuv': 'Campfire_3840x2160_30fps_bt709_420_videoRange.yuv', 'res': (3840, 2160), 'bitdepth': 10},
+
+
+        # --- CLASSE A2 (4K - Complex Textures / Fine Details) ---
+        'CatRobot': {'yuv': 'CatRobot_3840x2160_60fps_10bit_420_jvet.yuv', 'res': (3840, 2160), 'bitdepth': 10},
+        'DaylightRoad2': {'yuv': 'DaylightRoad2_3840x2160_60fps_10bit_420.yuv', 'res': (3840, 2160), 'bitdepth': 10},
+        'ParkRunning3': {'yuv': 'ParkRunning3_3840x2160_50fps_10bit_420.yuv', 'res': (3840, 2160), 'bitdepth': 10},
+
+
+        # --- CLASSE B (1080p - High Definition) ---
+        'MarketPlace': {'yuv': 'MarketPlace_1920x1080_60fps_10bit_420.yuv', 'res': (1920, 1080), 'bitdepth': 10},
+        'RitualDance': {'yuv': 'RitualDance_1920x1080_60fps_10bit_420.yuv', 'res': (1920, 1080), 'bitdepth': 10},
+        'Cactus': {'yuv': 'Cactus_1920x1080_50.yuv', 'res': (1920, 1080), 'bitdepth': 8},
+        'BasketballDrive': {'yuv': 'BasketballDrive_1920x1080_50.yuv', 'res': (1920, 1080), 'bitdepth': 8},
+        'BQTerrace': {'yuv': 'BQTerrace_1920x1080_60.yuv', 'res': (1920, 1080), 'bitdepth': 8},
+
+
+        # --- CLASSE C (WVGA - Standard Definition) ---
+        'BasketballDrill': {'yuv': 'BasketballDrill_832x480_50.yuv', 'res': (832, 480), 'bitdepth': 8},
+        'BQMall': {'yuv': 'BQMall_832x480_60.yuv', 'res': (832, 480), 'bitdepth': 8},
+        'PartyScene': {'yuv': 'PartyScene_832x480_50.yuv', 'res': (832, 480), 'bitdepth': 8},
+        'RaceHorsesC': {'yuv': 'RaceHorsesC_832x480_30.yuv', 'res': (832, 480), 'bitdepth': 8},
+
+
+        # --- CLASSE D (QWVGA - Low Resolution) ---
+        'BasketballPass': {'yuv': 'BasketballPass_416x240_50.yuv', 'res': (416, 240), 'bitdepth': 8},
+        'BQSquare': {'yuv': 'BQSquare_416x240_60.yuv', 'res': (416, 240), 'bitdepth': 8},
+        'BlowingBubbles': {'yuv': 'BlowingBubbles_416x240_50.yuv', 'res': (416, 240), 'bitdepth': 8},
+        'RaceHorses': {'yuv': 'RaceHorses_416x240_30.yuv', 'res': (416, 240), 'bitdepth': 8},
+
+
+        # --- CLASSE E (720p - Video Conferencing) ---
+        'FourPeople': {'yuv': 'FourPeople_1280x720_60.yuv', 'res': (1280, 720), 'bitdepth': 8},
+        'Johnny': {'yuv': 'Johnny_1280x720_60.yuv', 'res': (1280, 720), 'bitdepth': 8},
+        'KristenAndSara': {'yuv': 'KristenAndSara_1280x720_60.yuv', 'res': (1280, 720), 'bitdepth': 8},
+
+
+        # --- CLASSE F (Screen Content Coding - SCC) ---
+        'ArenaOfValor': {'yuv': 'ArenaOfValor_1920x1080_60.yuv', 'res': (1920, 1080), 'bitdepth': 8},
+        'BasketballDrillText': {'yuv': 'BasketballDrillText_832x480_50.yuv', 'res': (832, 480), 'bitdepth': 8},
+        'SlideEditing': {'yuv': 'SlideEditing_1280x720_30.yuv', 'res': (1280, 720), 'bitdepth': 8},
+        'SlideShow': {'yuv': 'SlideShow_1280x720_20.yuv', 'res': (1280, 720), 'bitdepth': 8},
     }
+
     FRAME_MAPPING = {
         # { frame_id: {"ref_frame": ID, "level": N} }
         0: {"ref_frame": None, "level": 0},
