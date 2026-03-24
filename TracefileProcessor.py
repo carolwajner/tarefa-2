@@ -33,6 +33,13 @@ class TracefileProcessor:
 
 
     def _process_tracefile(self, zip_file, filename):
+        video_key = filename.split('_')[0]
+        
+        if video_key not in self.configs:
+            return
+            
+        qp = filename.split('_')[1]
+
         with zip_file.open(filename) as f:
             # tracefile format
             cols = ['type', 'frame', 'x', 'y', 'w', 'h', 'parameter', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6']
