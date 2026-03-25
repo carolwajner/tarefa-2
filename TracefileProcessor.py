@@ -2,6 +2,7 @@ import os
 import glob
 import zipfile
 import pandas as pd
+import gc
 import numpy as np
 from FeatureExtractor import FeatureExtractor
 from VideoCaptureYUV import VideoCaptureYUV
@@ -43,7 +44,12 @@ class TracefileProcessor:
         with zip_file.open(filename) as f:
             # tracefile format
             cols = ['type', 'frame', 'x', 'y', 'w', 'h', 'parameter', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6']
-            df_trace = pd.read_csv(f, sep=';', comment='#', header=None, names=cols, index_col=False, engine='python')
+            
+            df_trace = pd.read_csv(f, sep=';', comment='#', header=None, names=cols, index_col=False)
+            
+            # filters parameters of interest
+            keep_params = ['PredMode', 'MVL0', 'MVDL0', 'MVL1', 'MVDL1', 'QP']
+            df_trace = df_trace[df_trace['parameter'].isin(keep_params)]
                         
             df_trace = df_trace.rename(columns={'v1': 'value'})
             mask_vetor = df_trace['v2'].notna()
@@ -54,10 +60,13 @@ class TracefileProcessor:
                     
             df_trace.loc[mask_vetor, 'parameter'] = df_trace.loc[mask_vetor, 'parameter'] + '_X'
 
-            # removes null columns            
+            # removes null columns and pivots the dataframe
             df_final = pd.concat([df_trace, df_y], ignore_index=True).drop(columns=['v2', 'v3', 'v4', 'v5', 'v6'])
+            
+            del df_trace
+            del df_y
+            gc.collect()
                         
-            # pivots the dataframe to have parameters as columns and their corresponding values            
             df_pivoted = df_final.pivot_table(
                 index=['frame', 'x', 'y', 'w', 'h'], 
                 columns='parameter', 
@@ -65,10 +74,14 @@ class TracefileProcessor:
                 aggfunc='first'
             ).reset_index()
 
-            video_key = filename.split('_')[0]
-            qp = filename.split('_')[1]
+            # frees memory
+            del df_final
+            gc.collect()
 
             self._extract_video_data(video_key, qp, df_pivoted)
+            
+            del df_pivoted
+            gc.collect()
 
 
     def _extract_video_data(self, video_key, qp, df_pivoted):
@@ -146,6 +159,10 @@ class TracefileProcessor:
                     target_qp=qp                  
                 )
                 data.append(base_info)
+                
+            keys_to_delete = [k for k in self.frame_buffer.keys() if k < (current_frame_idx - 40) and k not in [frame_num, ref_id]]
+            for k in keys_to_delete:
+                del self.frame_buffer[k]
 
         cap.close()
         self.frame_buffer.clear() 

@@ -19,13 +19,13 @@ class DatasetManager:
             df.to_csv(f, mode='a', index=False, header=not file_exists)
 
     def create_zip(self, zip_name='datasets_final.zip'):
-        with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as z:
+        with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED, allowZip64=True) as z:
             for gz_path in [self.inter_path]:
                 if os.path.exists(gz_path):
                     csv_inside_zip = gz_path.replace('.gz', '')
                     
                     with gzip.open(gz_path, 'rb') as f_in:
-                        with z.open(csv_inside_zip, 'w') as f_out:
+                        with z.open(csv_inside_zip, 'w', force_zip64=True) as f_out:
                             shutil.copyfileobj(f_in, f_out)
                     
                     os.remove(gz_path)

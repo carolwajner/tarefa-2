@@ -1,24 +1,12 @@
 from TracefileProcessor import TracefileProcessor
 
-tracefile_folder = '/home/research-data/tracefiles-zipped'
-video_folder = '/home/research-data/video-sequences/'
+tracefile_folder = 'Tracefiles'
+video_folder = 'videos'
 
 if __name__ == '__main__':
     VIDEOS = {
-        # --- CLASSE A1 ---
-        'Tango2': {'yuv': 'Tango2_3840x2160_60fps_10bit_420.yuv', 'res': (3840, 2160), 'bit_depth': 10},
-
-        # --- CLASSE A2 ---
-        'DaylightRoad2': {'yuv': 'DaylightRoad2_3840x2160_60fps_10bit_420.yuv', 'res': (3840, 2160), 'bit_depth': 10},
-
-        # --- CLASSE B ---
-        'Cactus': {'yuv': 'Cactus_1920x1080_50.yuv', 'res': (1920, 1080), 'bit_depth': 8},
-        'BasketballDrive': {'yuv': 'BasketballDrive_1920x1080_50.yuv', 'res': (1920, 1080), 'bit_depth': 8},
-
-        # --- CLASSE C ---
-        'BasketballDrill': {'yuv': 'BasketballDrill_832x480_50.yuv', 'res': (832, 480), 'bit_depth': 8},
+        'BQSquare' : { 'res' : (416, 240) , 'bit_depth' : 8, 'yuv' : 'BQSquare_416x240_60.yuv' }
     }
-
     FRAME_MAPPING = {
         # { frame_id: {"ref_frame": ID, "level": N} }
         0: {"ref_frame": None, "level": 0},
