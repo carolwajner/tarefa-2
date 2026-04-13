@@ -151,6 +151,7 @@ class TracefileProcessor:
                     cu=row,
                     frame=frame_pixels,
                     ref_frame=ref_pixels,
+                    ref_id=ref_id,
                     ctu_analyzer=self.ctu_analyzer,
                     ctu_x=row['ctu_x'],
                     ctu_y=row['ctu_y'],

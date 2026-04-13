@@ -8,7 +8,8 @@ class FeatureExtractor:
                         video_key, 
                         cu, 
                         frame, 
-                        ref_frame, 
+                        ref_frame,
+                        ref_id, 
                         ctu_analyzer, 
                         ctu_x, ctu_y, 
                         frame_level, 
@@ -33,7 +34,7 @@ class FeatureExtractor:
 
         left_x, top_y = ctu_x - 128, ctu_y - 128 
 
-        ref_ctu_stats = ctu_analyzer.get_ctu_statistics(frame_id=cu['frame'], ctu_x=ctu_x, ctu_y=ctu_y)
+        ref_ctu_stats = ctu_analyzer.get_ctu_statistics(frame_id=ref_id, ctu_x=ctu_x, ctu_y=ctu_y)
         left_ctu_stats = ctu_analyzer.get_ctu_statistics(frame_id=cu['frame'], ctu_x=left_x, ctu_y=ctu_y)
         top_ctu_stats = ctu_analyzer.get_ctu_statistics(frame_id=cu['frame'], ctu_x=ctu_x, ctu_y=top_y)
 
